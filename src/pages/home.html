@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>达摩一掌经 - 首页</title>
+    <link href="/css/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 添加浏览器兼容性前缀 */
+        :root {
+            --primary: #8B5A2B;
+            --secondary: #D4AF37;
+            --dark: #1E1E1E;
+            --light: #F5F5F5;
+        }
+        
+        /* 浏览器检测提示 */
+        .browser-warning {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ff9800;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            z-index: 9999;
+        }
+        
+        /* 检测IE浏览器 */
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            .browser-warning {
+                display: block;
+            }
+        }
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            height: 100%;
+        }
+        .bg-pattern {
+            background-image: url('https://images.unsplash.com/photo-1518655048521-f130df041f66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 9999px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #6d4622;
+            transform: translateY(-2px);
+        }
+        .input-field {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .input-field:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 1px var(--secondary);
+        }
+        .input-field:focus-within {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px var(--secondary);
+        }
+        .date-time-picker {
+            position: relative;
+            min-height: 44px;
+        }
+        .date-time-picker input {
+            z-index: 10;
+        }
+        .date-time-picker span {
+            pointer-events: none;
+        }
+        select.input-field {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        @media (max-width: 640px) {
+            select.input-field {
+                max-height: 150px;
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+        .tab-bar {
+            background-color: rgba(30, 30, 30, 0.9);
+            /* 添加浏览器前缀 */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        .tab-item.active {
+            color: var(--secondary);
+        }
+        .date-picker {
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body class="relative h-full overflow-hidden">
+    <!-- 浏览器兼容性提示 -->
+    <div class="browser-warning">
+        您正在使用不受支持的浏览器，部分功能可能无法正常使用。建议使用最新版Chrome、Firefox、Edge或Safari浏览器。
+    </div>
+    <div class="bg-pattern"></div>
+    
+    <!-- 主内容 -->
+    <div class="container mx-auto px-6 py-8">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold mb-2 text-yellow-200">达摩一掌经</h1>
+            <p class="text-gray-400">千年佛门命理智慧</p>
+        </div>
+        
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-6 text-center">输入生辰信息</h2>
+            
+            <form id="fortune-form" class="space-y-4">
+
+                <div>
+                  
+                    <div class="flex space-x-4">
+                        <label class="flex items-center">
+                            <input type="radio" name="gender" value="male" class="mr-2" checked>
+                            <span>男</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="gender" value="female" class="mr-2">
+                            <span>女</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="flex items-center mt-2 space-x-4">
+                    <label class="flex items-center">
+                        <input type="radio" name="calendarType" value="solar" checked class="mr-2">
+                        <span class="text-gray-400">阳历日期</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="radio" name="calendarType" value="lunar" class="mr-2">
+                        <span class="text-gray-400">阴历日期</span>
+                    </label>
+                </div>
+
+                <div class="relative">
+                    <label class="block text-gray-400 mb-2">出生日期</label>
+                    <div class="input-field w-full flex items-center px-4 py-3 relative">
+                        <i class="fas fa-calendar-alt text-gray-400 mr-3"></i>
+                        <input type="date" name="birth-date" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" required>
+                        <span id="birth-date-display" class="text-white">选择日期</span>
+                        <i class="fas fa-chevron-down text-gray-400 ml-auto"></i>
+                    </div>
+                </div>
+                
+                <div class="relative mt-4">
+                    <label class="block text-gray-400 mb-2">出生时间</label>
+                    <div class="input-field w-full flex items-center px-4 py-3 relative">
+                        <i class="fas fa-clock text-gray-400 mr-3"></i>
+                        <input type="time" name="birth-time" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" required>
+                        <span id="birth-time-display" class="text-white">选择时间</span>
+                        <i class="fas fa-chevron-down text-gray-400 ml-auto"></i>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-400 mb-2">出生地区</label>
+                    <div class="input-field w-full flex items-center px-4 py-3 relative">
+                        <select id="province" name="location" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" required>
+                            <option value="">选择省份</option>
+                            <option value="北京">北京</option>
+                            <option value="天津">天津</option>
+                            <option value="河北">河北</option>
+                            <option value="山西">山西</option>
+                            <option value="内蒙古">内蒙古</option>
+                            <option value="辽宁">辽宁</option>
+                            <option value="吉林">吉林</option>
+                            <option value="黑龙江">黑龙江</option>
+                            <option value="上海">上海</option>
+                            <option value="江苏">江苏</option>
+                            <option value="浙江">浙江</option>
+                            <option value="安徽">安徽</option>
+                            <option value="福建">福建</option>
+                            <option value="江西">江西</option>
+                            <option value="山东">山东</option>
+                            <option value="河南">河南</option>
+                            <option value="湖北">湖北</option>
+                            <option value="湖南">湖南</option>
+                            <option value="广东">广东</option>
+                            <option value="广西">广西</option>
+                            <option value="海南">海南</option>
+                            <option value="重庆">重庆</option>
+                            <option value="四川">四川</option>
+                            <option value="贵州">贵州</option>
+                            <option value="云南">云南</option>
+                            <option value="西藏">西藏</option>
+                            <option value="陕西">陕西</option>
+                            <option value="甘肃">甘肃</option>
+                            <option value="青海">青海</option>
+                            <option value="宁夏">宁夏</option>
+                            <option value="新疆">新疆</option>
+                            <option value="台湾">台湾</option>
+                            <option value="香港">香港</option>
+                            <option value="澳门">澳门</option>
+                        </select>
+                        <span id="location-display" class="text-white">选择省份</span>
+                        <i class="fas fa-chevron-down text-gray-400 ml-auto"></i>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="text-center mt-12">
+            <button type="submit" form="fortune-form" class="btn-primary inline-flex items-center">
+                <i class="fas fa-calculator mr-2"></i>
+                立即排盘
+            </button>
+        </div>
+        
+        <div class="mt-8 text-center text-gray-500 text-sm">
+            <p>达摩一掌经是佛门秘传命理方法</p>
+            <p>仅供娱乐参考，请勿过度依赖</p>
+        </div>
+    </div>
+
+    <!-- 引入地区数据 -->
+    
+    <!-- 引入JavaScript -->
+    <!-- 添加浏览器特性检测 -->
+    <script>
+        // 检测浏览器是否支持ES模块
+        if (!('noModule' in HTMLScriptElement.prototype)) {
+            document.querySelector('.browser-warning').style.display = 'block';
+        }
+        
+        // 检测现代浏览器特性
+        const isModernBrowser = (
+            'Promise' in window &&
+            'fetch' in window &&
+            'IntersectionObserver' in window
+        );
+        
+        if (!isModernBrowser) {
+            document.querySelector('.browser-warning').style.display = 'block';
+        }
+    </script>
+    
+    <script type="module">
+        import { initApp } from '../js/app.js'
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM已加载，开始初始化应用')
+
+            
+            // 日期选择器显示更新
+            const dateInput = document.querySelector('input[name="birth-date"]')
+            const dateDisplay = document.getElementById('birth-date-display')
+            dateInput.addEventListener('change', (e) => {
+                dateDisplay.textContent = e.target.value || '选择日期'
+            })
+            
+            // 时间选择器显示更新
+            const timeInput = document.querySelector('input[name="birth-time"]')
+            const timeDisplay = document.getElementById('birth-time-display')
+            timeInput.addEventListener('change', (e) => {
+                timeDisplay.textContent = e.target.value || '选择时间'
+            })
+
+            // 地点选择器显示更新
+            const locationSelect = document.getElementById('province')
+            const locationDisplay = document.getElementById('location-display')
+            locationSelect.addEventListener('change', (e) => {
+                locationDisplay.textContent = e.target.value || '选择省份'
+            })
+            
+            try {
+                initApp()
+                console.log('应用初始化完成')
+            } catch (error) {
+                console.error('初始化错误:', error)
+                alert('应用初始化失败，请检查控制台')
+            }
+        })
+    </script>
+    
+    <!-- 底部导航栏 -->
+    <div class="tab-bar fixed bottom-0 left-0 right-0 flex justify-around items-center py-3 border-t border-gray-800">
+        <a href="home.html" class="tab-item active flex flex-col items-center">
+            <i class="fas fa-home mb-1"></i>
+            <span class="text-xs">排盘</span>
+        </a>
+        <!-- <a href="fortune.html" class="tab-item flex flex-col items-center text-gray-400">
+            <i class="fas fa-chart-line mb-1"></i>
+            <span class="text-xs">运势</span> -->
+        </a>
+        <a href="history.html" class="tab-item flex flex-col items-center text-gray-400">
+            <i class="fas fa-history mb-1"></i>
+            <span class="text-xs">历史</span>
+        </a>
+        <a href="consult.html" class="tab-item flex flex-col items-center text-gray-400">
+            <i class="fas fa-comments mb-1"></i>
+            <span class="text-xs">解盘</span>
+        </a>
+    </div>
+</body>
+</html>
