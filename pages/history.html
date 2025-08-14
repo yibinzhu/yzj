@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>达摩一掌经 - 历史记录</title>
+    <link href="/css/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8B5A2B;
+            --secondary: #D4AF37;
+            --dark: #1E1E1E;
+            --light: #F5F5F5;
+        }
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            height: 100%;
+        }
+        .bg-pattern {
+            background-image: url('https://images.unsplash.com/photo-1518655048521-f130df041f66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        .tab-bar {
+            background-color: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .tab-item.active {
+            color: var(--secondary);
+        }
+        .history-item {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(50, 50, 50, 0.8));
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+        
+        #history-container {
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--dark);
+        }
+        
+        #history-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #history-container::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        
+        #history-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 3px;
+        }
+        .history-info {
+            flex: 1;
+        }
+        .history-date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 4px;
+        }
+        .history-desc {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .history-bazi {
+            font-size: 14px;
+            color: var(--secondary);
+        }
+        .history-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .history-btn {
+            background-color: rgba(139, 90, 43, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: var(--light);
+            font-size: 14px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #444;
+        }
+        .search-bar {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .search-input {
+            background: transparent;
+            border: none;
+            color: white;
+            flex: 1;
+            margin-left: 10px;
+        }
+        .search-input:focus {
+            outline: none;
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/history-cef071cb.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/app-66ea1794.js">
+</head>
+<body class="relative h-full overflow-hidden">
+    <div class="bg-pattern"></div>
+    
+    <!-- 导航栏和搜索栏 -->
+    <div class="bg-gray-900">
+        <div class="px-4 py-3 flex items-center border-b border-gray-700">
+            <h1 class="text-xl font-semibold">历史记录</h1>
+            <div class="ml-auto flex space-x-3">
+                <button class="text-gray-400">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 搜索栏 -->
+        <div class="px-4 py-2 bg-gray-800">
+            <div class="flex items-center bg-gray-700 rounded-lg">
+                <i class="fas fa-search text-gray-400 px-3"></i>
+                <input type="text" class="search-input bg-transparent py-2 flex-1" placeholder="搜索历史记录..." id="search-input">
+                <button id="clear-search" class="text-gray-400 px-2 hidden">
+                    <i class="fas fa-times"></i>
+                </button>
+                <button id="search-btn" class="bg-amber-600 text-white px-4 py-2 rounded-r-lg">搜索</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 主内容 -->
+    <div class="container mx-auto px-4 pb-24 pt-2" style="height: calc(100vh - 136px); overflow-y: auto;" id="history-container">
+        
+        <!-- 历史记录列表将在这里动态生成 -->
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <div class="tab-bar fixed bottom-0 left-0 right-0 flex justify-around items-center py-3 border-t border-gray-800">
+        <a href="home.html" class="tab-item flex flex-col items-center text-gray-400">
+            <i class="fas fa-home mb-1"></i>
+            <span class="text-xs">排盘</span>
+        </a>
+        <a href="history.html" class="tab-item active flex flex-col items-center">
+            <i class="fas fa-history mb-1"></i>
+            <span class="text-xs">历史</span>
+        </a>
+        <a href="consult.html" class="tab-item flex flex-col items-center text-gray-400">
+            <i class="fas fa-comments mb-1"></i>
+            <span class="text-xs">解盘</span>
+        </a>
+    </div>
+
+    <!-- 引入JavaScript -->
+    
+</body>
+</html>

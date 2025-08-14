@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>达摩一掌经 - 命盘结果</title>
+    <link href="/css/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'SimSun';
+            src: local('SimSun'), local('宋体');
+        }
+        
+        :root {
+            --primary: #8B5A2B;
+            --secondary: #D4AF37;
+            --dark: #1E1E1E;
+            --light: #F5F5F5;
+        }
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            height: 100%;
+        }
+        .bg-pattern {
+            background-image: url('https://images.unsplash.com/photo-1518655048521-f130df041f66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        .chart-container {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(50, 50, 50, 0.8));
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .pillar-box {
+            background: linear-gradient(135deg, rgba(139, 90, 43, 0.3), rgba(212, 175, 55, 0.1));
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .pillar-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+        }
+        .pillar-title {
+            color: #D4AF37;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .pillar-content {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+        }
+        .palace {
+            background-color: rgba(139, 90, 43, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .palace-title {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .palace-content {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* 竹简样式 - 优化版 */
+        .bamboo-strip-container {
+            display: flex;
+            justify-content: center;
+            gap: 2px; /* 缩小竹简间距 */
+            margin-bottom: 2rem;
+        }
+        
+        .bamboo-strip {
+            background: #f5e6c8; /* 竹简底色 */
+            background-image: linear-gradient(
+                to right,
+                #e8d9b5 1px,
+                transparent 1px,
+                transparent 19px,
+                #e8d9b5 20px
+            ); /* 竹简纹理 */
+            background-size: 20px 100%;
+            border-radius: 4px;
+            padding: 15px 8px; /* 调整内边距 */
+            width: 65px; /* 稍微加宽 */
+            height: 220px; /* 稍微加高 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 1px solid #d4af37;
+            margin: 0 1px; /* 微调外边距 */
+        }
+        
+        .bamboo-strip::before,
+        .bamboo-strip::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 5px; /* 加粗边框 */
+            background: #8B5A2B;
+            left: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .bamboo-strip::before {
+            top: 0;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .bamboo-strip::after {
+            bottom: 0;
+            border-radius: 0 0 4px 4px;
+        }
+        
+        .bamboo-title {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            font-family: "SimSun", "宋体", serif; /* 使用宋体 */
+            font-size: 1.0rem;
+            font-weight: bold;
+            color: #8B5A2B;
+            margin-top: 12px;
+            margin-bottom: 12px;
+            letter-spacing: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); /* 添加文字阴影增强立体感 */
+        }
+        
+        .bamboo-content {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            font-family: "SimSun", "宋体", serif; /* 使用宋体 */
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #5c3a21;
+            letter-spacing: 30px;
+            word-spacing: 12px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); /* 添加文字阴影增强立体感 */
+        }
+        .tab-bar {
+            background-color: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .tab-item.active {
+            color: var(--secondary);
+        }
+        .nav-back {
+            color: var(--secondary);
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/result-8fc6264b.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/app-66ea1794.js">
+</head>
+<body class="relative h-full overflow-hidden">
+    <div class="bg-pattern"></div>
+    
+    <!-- 导航栏 -->
+    <div class="px-6 py-4 flex items-center">
+        <a href="home.html" class="nav-back mr-4">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <h1 class="text-xl font-semibold">命盘分析</h1>
+        <div class="ml-auto flex space-x-3">
+           <!-- <button class="text-gray-400">
+                <i class="fas fa-share-alt"></i>
+            </button> -->
+            <button id="bookmark-btn" class="text-gray-400" onclick="toggleBookmark()">
+                <i id="bookmark-icon" class="far fa-bookmark"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- 主内容 -->
+    <div class="container mx-auto px-6 pb-16" style="height: calc(100vh - 140px); overflow-y: auto;">
+        <!-- 基本信息 -->
+        <div id="basic-info" class="mb-6 p-4 bg-gray-800 rounded-lg">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-lg font-semibold">基本信息</h2>
+                <span id="generate-date" class="text-sm text-gray-400"></span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <p class="text-gray-400">阳历</p>
+                    <p id="solar-date"></p>
+                </div>
+                <div>
+                    <p class="text-gray-400">阴历</p>
+                    <p id="lunar-date"></p>
+                </div>
+                <div>
+                    <p class="text-gray-400">出生时辰</p>
+                    <p id="birth-time"></p>
+                </div>
+                <div>
+                    <p class="text-gray-400">出生地区</p>
+                    <p id="location-info"></p>
+                </div>
+                <div>
+                    <p class="text-gray-400">性别</p>
+                    <p id="gender-info"></p>
+                </div>
+                <div>
+                    <p class="text-gray-400">虚岁</p>
+                    <p id="nianji-info"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 四柱宫位 - 竹简样式 -->
+        <div class="bamboo-strip-container mb-8 flex justify-center space-x-4">
+            <!-- 年柱竹简 -->
+            <div class="bamboo-strip">
+                <div class="bamboo-title">年柱</div>
+                <div id="year-pillar" class="bamboo-content"></div>
+            </div>
+            <!-- 月柱竹简 -->
+            <div class="bamboo-strip">
+                <div class="bamboo-title">月柱</div>
+                <div id="month-pillar" class="bamboo-content"></div>
+            </div>
+            <!-- 日柱竹简 -->
+            <div class="bamboo-strip">
+                <div class="bamboo-title">日柱</div>
+                <div id="day-pillar" class="bamboo-content"></div>
+            </div>
+            <!-- 时柱竹简 -->
+            <div class="bamboo-strip">
+                <div class="bamboo-title">时柱</div>
+                <div id="time-pillar" class="bamboo-content"></div>
+            </div>
+        </div>
+        
+        <!-- 宫位分析 -->
+        <!-- <div class="mb-6">
+            <h2 class="text-lg font-semibold mb-4">六道宫位分析</h2>
+            <div id="palaces-container"></div>
+        </div> -->
+        
+        <!-- 命理建议 -->
+        <!-- <div class="mb-6 p-4 bg-gray-800 rounded-lg">
+            <h2 class="text-lg font-semibold mb-3">命理建议</h2>
+            <ul id="advice-list" class="list-disc pl-5 space-y-2 text-sm"></ul>
+        </div> -->
+    </div>
+
+   
+    <!-- 引入app.js -->
+    
+    
+    <script>
+        // 初始化收藏状态
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultId = new URLSearchParams(window.location.search).get('id')
+            const isBookmarked = localStorage.getItem(`bookmark_${resultId}`) === 'true'
+            document.getElementById('bookmark-icon').className = isBookmarked ? 'fas fa-bookmark text-yellow-500' : 'far fa-bookmark'
+        })
+
+        // 切换收藏状态
+        function toggleBookmark() {
+            const resultId = new URLSearchParams(window.location.search).get('id')
+            const icon = document.getElementById('bookmark-icon')
+            const isBookmarked = icon.className.includes('fas')
+            
+            if (isBookmarked) {
+                icon.className = 'far fa-bookmark'
+                localStorage.setItem(`bookmark_${resultId}`, 'false')
+            } else {
+                icon.className = 'fas fa-bookmark text-yellow-500'
+                localStorage.setItem(`bookmark_${resultId}`, 'true')
+            }
+        }
+    </script>
+    
+    <!-- 底部导航栏 -->
+    <div class="tab-bar fixed bottom-0 left-0 right-0 flex justify-around items-center py-3">
+        <a href="home.html" class="tab-item flex flex-col items-center text-gray-400">
+            <i class="fas fa-home mb-1"></i>
+            <span class="text-xs">排盘</span>
+        </a>
+        <!-- <a href="fortune.html" class="tab-item flex flex-col items-center text-gray-400">
+            <i class="fas fa-chart-line mb-1"></i>
+            <span class="text-xs">运势</span> -->
+        </a>
+        <a href="history.html" class="tab-item flex flex-col items-center text-gray-400">
+            <i class="fas fa-history mb-1"></i>
+            <span class="text-xs">历史</span>
+        </a>
+        <a href="consult.html" class="tab-item flex flex-col items-center text-gray-400">
+            <i class="fas fa-comments mb-1"></i>
+            <span class="text-xs">解盘</span>
+        </a>
+    </div>
+</body>
+</html>
